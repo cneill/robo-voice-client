@@ -4,7 +4,7 @@
 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
 <style>
 .cam {
-	height: 500px;
+	height: 200px;
 	background: #ddd;
 }
 </style>
@@ -27,7 +27,7 @@
 				</ul>
 			</div>
 		</div>
-		<div class="bottom row">
+		<div class="controls row">
 			<div class="mode span4">
 				<h4>Mode</h4>
 				<div class="select btn btn btn-success">Select</div>
@@ -35,8 +35,6 @@
 			</div>
 			<div class="record span4">
 				<h4>Recording</h4>
-				<input type="text" class="result input-block" />
-				<br />
 				<div class="start btn btn btn-success"><i class="icon-play"></i>Start</div>
 				<div class="stop btn btn btn-danger"><i class="icon-stop"></i>Stop</div>
 				<div class="clear btn btn-primary">Clear</div>
@@ -47,7 +45,14 @@
 				<div class="sphere btn btn btn-danger">Sphere</div>
 				<div class="cylinder btn btn btn-danger">Cylinder</div>
 			</div>
-		</div>
+        </div>
+        <div class="results row">
+            <div class="span12">
+                <h4>Results</h4>
+                <div class="raw-result"></div>
+                <div class="resolved-result"></div>
+            </div>
+        </div>
 	</div>
 
 <!-- Libraries -->

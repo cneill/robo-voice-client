@@ -62,8 +62,13 @@ var setup_recorder = function () {
 		});
 		if (complete_transcript){
 			console.log("End result: " + complete_transcript);
-			$('.result').val(complete_transcript);
-		}
+            var raw = $('.raw-result').val() + "<br />" + complete_transcript;
+			$('.raw-result').val(raw);
+            var resolve_url = 'inventropy.us:5000/resolve/' +
+                encodeURIComponent(complete_transcript);
+            $.get(resolve_url, function (data) {
+                console.log(data);
+            });
 	};
 
 	r.onerror = function (e) {
