@@ -6,22 +6,39 @@ var tokenizer = new natural.WordTokenizer();
 
 var setup = function () {
     setup_routes();
-    app.listen(5000);
-    console.log("Listening on port 5000");
+    app.enable("jsonp callback");
+    app.listen(5002);
+    console.log("Listening on port 5002");
 }
 
 var setup_routes = function () {
-    app.get('/resolve/:raw', function(req, res) {
-       if(req.params.raw) {
-           res.type('text/plain');
-           var cmds = get_commands(req.params.raw);
+
+    app.use('/', express.static(__dirname + '/public'));
+
+    app.post('/resolve/', function(req, res) {
+       if(req.param('raw')) {
+           res.type('application/json');
+           var cmds = get_commands(req.param('raw'));
            if(cmds) {
-               res.json(cmds);
+               res.jsonp(cmds);
            } else {
-               res.send('No commands');
+               res.jsonp({});
            }
        }
     });
+
+    app.post('/interrupt/', function(req, res) {
+        if(req.param('raw')) {
+            res.type('application/json');
+            if (is_interrupt(req.param('raw'))) {
+                halt_commands();
+                res.jsonp(true);
+            } else {
+                res.jsonp(false);
+            }
+        }
+    });
+
 }
 
 var get_commands = function(str) {
@@ -100,5 +117,21 @@ var check_command_sanity = function (command, phonetics) {
     }
     return true;
 }
+
+var is_interrupt = function (transcript) {
+    words = transcript.split(' ');
+    for(var i in words) {
+        if (metaphone.compare("stop", words[i]) 
+                || natural.LevenshteinDistance("stop", words[i]) <= 2) {
+            console.log("Received an interrupt!");
+            return true;
+        }
+    }
+    return false;
+}
+
+var halt_commands = function () {
+
+};
 
 setup();
